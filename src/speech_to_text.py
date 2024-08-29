@@ -2,13 +2,15 @@ import pyaudio
 import numpy as np
 import whisper
 
+from src.wake_word import get_micro_index_by_name
+
 WHISPER_RATE = 16000
 DEVICE_RATE = 16000
 CHUNK = 128
 CHANNELS = 1
 INPUT_DEVICE_INDEX = 7
 SILENCE_THRESHOLD = 250
-SILENCE_DURATION = 3
+SILENCE_DURATION = 5
 
 def is_silent(data, threshold):
     return np.abs(data).mean() < threshold
@@ -24,7 +26,7 @@ class SpeechToTextUsingWhisper(object):
                         rate=device_rate,
                         input=True,
                         frames_per_buffer=chunk,
-                        input_device_index=input_device_index)
+                        input_device_index=get_micro_index_by_name())
         print("Recording for Whisper...")
         frames = []
         silent_chunks = 0
