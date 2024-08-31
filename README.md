@@ -4,7 +4,7 @@ Brain Future Talker is a simple voice assistant which can answer your questions 
 Requirements for this project are listed in ```requirements.txt```. First start of assistant may be slow because of weight downloading.
 # Usage
 ## Default
-Run ```main.py```. Configuration files are not required.
+Run ```main.py```. Configuration files are not required. Say "Hey, Jarvis", ask questions, receive answers. To stop assistant, instead of question say "Stop Jarvis".
 ## Add your configs
 Add configuration json file. By default code tries to find ```config.json``` in project directory, but you can specify different path with ```-c```/```--config``` flag. Allowed entries are:
 - ```use_hey_Jarvis``` : y/n - whether to use wake word detection (to make assistant less resource consuming by starting on "Hey, Jarvis") or no;
@@ -20,6 +20,9 @@ Add json file structure described below. By default code tries to find ```comman
     - ```success_msg``` : message to output on successful command identification, with ```{number}``` placeholders to insert specific extracted groups;
     - ```failure_msg``` : message to output on failed command identification, with ```{number}``` placeholders to insert specific extracted groups;
 - ```user_dicts``` : dict of dicts for every user-specified dict, for example for ```ReplaceFromDict```, this entry is not required if you don't specify any additional dicts.
+- ```stop_phrases``` : list of phrases in lowercase - list of phrases on which assistant stops;
+- ```msg_not_found``` : string - message to output on no regex match;
+- ```msg_goodbye``` : string - message to output on stop phrase before exiting.
 # Inner working
 Assistant has following components:
 - Wake word detectionCode waits until user says "Hello, Jarvis" (if user didn't disable it in config). We used [openWakeWord](https://github.com/dscripka/openWakeWord);

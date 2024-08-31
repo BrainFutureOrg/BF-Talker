@@ -43,9 +43,11 @@ if __name__ == "__main__": # code's bad
         speech_to_text = SpeechToTextUsingWhisper()
         transcription = speech_to_text.start_whisper()
         tts.generate_voice(transcription)
-        ask_llm, msg = text_processing.process(transcription)
+        ask_llm, msg, should_exit = text_processing.process(transcription)
         if msg is not None:
             tts.generate_voice(msg)
         if ask_llm:
             llm_output = llm.make_question(transcription)
             tts.generate_voice(llm_output)
+        if should_exit:
+            break
