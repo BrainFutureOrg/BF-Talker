@@ -39,29 +39,31 @@ def get_micro_index_global(mic_name='pipewire', po=None):
 class WakewordWaiter(object):
     def __init__(self, FORMAT=pyaudio.paInt16, CHANNELS=1, RATE=16000, CHUNK=1280, mic_name='pipewire', jarvis_path=None):
         if jarvis_path is None:
-            jarvis_path = [p for p in openwakeword.get_pretrained_model_paths() if 'hey_jarvis_v0.1.onnx' in p][0]
+            self.jarvis_path = [p for p in openwakeword.get_pretrained_model_paths() if 'hey_jarvis_v0.1.onnx' in p][0]
+        else:
+            self.jarvis_path = jarvis_path
         self.FORMAT = FORMAT
         self.CHANNELS = CHANNELS
         self.RATE = RATE
         self.CHUNK = CHUNK
         self.audio = pyaudio.PyAudio()
-        input_index = get_micro_index_global(mic_name, po=self.audio)
-        if input_index is None:
+        self.input_index = get_micro_index_global(mic_name, po=self.audio)
+        if self.input_index is None:
             raise Exception("Micro not found")
 
-        self.mic_stream = self.audio.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE,
-                                input=True, frames_per_buffer=self.CHUNK, input_device_index=input_index)
-
+    def wait_for_wakeword(self, threshold=0.7):
         # Load pre-trained openwakeword models
         self.owwModel = Model(
             wakeword_model_paths=[
-                    jarvis_path
-                ],
+                self.jarvis_path
+            ],
         )
-
-    def wait_for_wakeword(self, threshold=0.7):
+        mic_stream = self.audio.open(format=self.FORMAT, channels=self.CHANNELS, rate=self.RATE,
+                                          input=True, frames_per_buffer=self.CHUNK, input_device_index=self.input_index)
         while True:
-            audio = np.frombuffer(self.mic_stream.read(self.CHUNK), dtype=np.int16)
+            audio = np.frombuffer(mic_stream.read(self.CHUNK), dtype=np.int16)
             prediction = self.owwModel.predict(audio)
             if prediction['hey_jarvis_v0.1'] > threshold:
+                mic_stream.close()
+                self.audio.terminate()
                 return True
