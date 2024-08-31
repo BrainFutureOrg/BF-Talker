@@ -11,13 +11,13 @@ import os
 import json
 import sys
 
-book_dict = {'deep learning' : '/home/kosenko/⬢/library/computer\\ sciences/machine\\ learning/advanced/DeepLearningBook.pdf'}
+#book_dict = {'deep learning' : '/home/kosenko/⬢/library/computer\\ sciences/machine\\ learning/advanced/DeepLearningBook.pdf'}
 
-page_dict = {'github': 'https://github.com/'}
+#page_dict = {'github': 'https://github.com/'}
 
-app_dict = {'chromium': 'org.chromium.Chromium',
-            'okular': 'okular',
-            'dolphin': 'dolphin'}
+#app_dict = {'chromium': 'org.chromium.Chromium',
+#            'okular': 'okular',
+#            'dolphin': 'dolphin'}
 
 class TextModifier(object):
     def modify(self, text):
@@ -74,12 +74,12 @@ class CommandProcessing(object):
         return msg
 
 
-command_dictionary = {
-    r'\bopen\b\s*(.*)\bbook\b': CommandProcessing('okular {0}', (ReplaceFromDict(book_dict),), '{0} book opened', '{0} book not found'),
-    r'\bopen\b\s*(.*)\bpage\b': CommandProcessing('org.chromium.Chromium {0}', (ReplaceFromDict(page_dict),), '{0} page opened', '{0} page not found'),
-    r'\bopen\b\s*(.*)': CommandProcessing('{0}', (ReplaceFromDict(app_dict),), '{0} opened', '{0} is unknown'),
-    r'\bsearch\b\s*(.*)': CommandProcessing('org.chromium.Chromium https://www.google.com/search?q={0}', (ReplaceString(' ', '+'),), 'searching {0}'),
-}
+#command_dictionary = {
+#    r'\bopen\b\s*(.*)\bbook\b': CommandProcessing('okular {0}', (ReplaceFromDict(book_dict),), '{0} book opened', '{0} book not found'),
+#    r'\bopen\b\s*(.*)\bpage\b': CommandProcessing('org.chromium.Chromium {0}', (ReplaceFromDict(page_dict),), '{0} page opened', '{0} page not found'),
+#    r'\bopen\b\s*(.*)': CommandProcessing('{0}', (ReplaceFromDict(app_dict),), '{0} opened', '{0} is unknown'),
+#    r'\bsearch\b\s*(.*)': CommandProcessing('org.chromium.Chromium https://www.google.com/search?q={0}', (ReplaceString(' ', '+'),), 'searching {0}'),
+#}
 
 class TextProcessing(object):
     def __init__(self, command_dict, msg_not_found = None):
@@ -87,7 +87,7 @@ class TextProcessing(object):
         self.msg_not_found = msg_not_found
 
     def process(self, text):
-        for pattern in command_dictionary.keys():
+        for pattern in self.command_dict.keys():
             match_open = re.search(pattern, text, re.IGNORECASE)
             if match_open:
                 groups = match_open.groups()
