@@ -18,7 +18,7 @@ class LanguageModel:
                            "manner. Your goal is to be as helpful as possible. "
                            "You speak only in English."
                            " Provide brief and relevant answers, avoiding unnecessary details."
-                           " Stick to the main point and keep responses short.")
+                           " Stick to the main point and keep responses very short.")
 
     def make_question(self, text):
         llm_prompt = self.prompt + "\nQ: {} \nA: ".format(text)
