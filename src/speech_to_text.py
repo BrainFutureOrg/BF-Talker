@@ -10,7 +10,7 @@ CHUNK = 128
 CHANNELS = 1
 INPUT_DEVICE_INDEX = 7
 SILENCE_THRESHOLD = 250
-SILENCE_DURATION = 5
+SILENCE_DURATION = 3
 
 def is_silent(data, threshold):
     return np.abs(data).mean() < threshold
