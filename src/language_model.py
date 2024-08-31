@@ -20,10 +20,11 @@ class LanguageModel:
                            "You speak only in English.")
 
     def make_question(self, text):
+        llm_prompt = self.prompt + "\nQ: {} \nA: ".format(text)
         output = self.llm(
-            self.prompt + "\nQ: {} \nA: ".format(text),  # Prompt
+            llm_prompt,  # Prompt
             max_tokens=128,  # Generate up to 32 tokens, set to None to generate up to the end of the context window
             stop=["Q:"],  # Stop generating just before the model would generate a new question
             echo=True  # Echo the prompt back in the output
         )  # Generate a completion, can also call create_completion
-        return output['choices'][0]['text']
+        return output['choices'][0]['text'][len(llm_prompt):]
