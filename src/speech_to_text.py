@@ -2,7 +2,7 @@ import pyaudio
 import numpy as np
 import whisper
 
-from src.wake_word import get_micro_index_by_name
+from wake_word import get_micro_index_by_name
 
 WHISPER_RATE = 16000
 DEVICE_RATE = 16000

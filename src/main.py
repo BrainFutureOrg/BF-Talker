@@ -1,6 +1,6 @@
 import json
 import argparse
-from src.text_processing import text_processing_from_config
+from text_processing import text_processing_from_config
 from wake_word import WakewordWaiter
 from speech_to_text import SpeechToTextUsingWhisper
 from text_processing import TextProcessing
