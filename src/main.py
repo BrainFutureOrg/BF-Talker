@@ -33,10 +33,11 @@ if __name__ == "__main__": # code's bad
     text_processing = text_processing_from_config(conf_dict["commands_json"]) #file not existing is not a problem btw
     llm = LanguageModel()
     tts = TTS()
+    if conf_dict["use_hey_Jarvis"] == "y":
+        wakeword_waiter = WakewordWaiter()
+        tts.generate_voice('Say HEY JARVIS!')
     while True:
         if conf_dict["use_hey_Jarvis"]== "y":
-            wakeword_waiter = WakewordWaiter()
-            tts.generate_voice('Say HEY JARVIS!')
             wakeword_waiter.wait_for_wakeword() #disabled to make testing faster
             tts.generate_voice('Jarvis hears you ...')
         speech_to_text = SpeechToTextUsingWhisper()
